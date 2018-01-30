@@ -1,9 +1,10 @@
+from cajero import Cajero
+from cliente import Cliente
 from math import exp
 import random
 
 class Simulacion:
-	def __init__(self, duracion, tasa):
-		self.tasa = tasa
+	def __init__(self, duracion):
 		self.duracion = duracion
 		self.tiempo = 0
 		self.cajeros = [Cajero() for _ in range(4)]
@@ -16,7 +17,7 @@ class Simulacion:
 	def pasa_hora(self):
 		if self.tiempo % 3600 == 0:
 			h = (self.tiempo // 3600) + 1
-			self.capacidad_clientes_disponible = int(exp(self.tasa * h))
+			self.capacidad_clientes_disponible = int(60 * exp(h))
 			if h > 1:
 				print(self.estadisticas())
 
@@ -72,22 +73,10 @@ class Simulacion:
 			'Tiempo esperado por cliente': round(self.total_tiempo_esperado / self.clientes_atendidos, 2),
 			'Porcentaje de clientes desertores': round(100 * self.desertores / (self.clientes_atendidos + self.desertores + len(self.cola)), 2),
 			'Tiempo desocupado por cajero': list(map(lambda c: round(100 * c.tiempo_desocupado / self.tiempo, 2), self.cajeros))
-		}		
+		}
 
-class Cajero:
-	def __init__(self):
-		self.tiempo_desocupado = 0
-		self.tiempo_atender = 0
-
-	def ocupado(self):
-		return self.tiempo_atender > 0
-
-	def tiene_cliente(self):
-		self.tiempo_atender -= 1
-
-	def ocioso(self):
-		self.tiempo_desocupado += 1
-
-class Cliente:
-	def __init__(self, tiempo_llegada):
-		self.tiempo_llegada = tiempo_llegada
+if __name__ == '__main__':
+	print("Introduzca duración en horas de la simulación")
+	h = int(input())
+	sim = Simulacion(3600 * h)
+	sim.run()
