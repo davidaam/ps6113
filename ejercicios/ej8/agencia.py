@@ -1,7 +1,7 @@
 from random import random
 from functools import reduce
 
-# Globals Constants
+# Globals Constants (Tipos de autos)
 COMPACTO = 0
 MEDIANO = 1
 LUJO = 2
